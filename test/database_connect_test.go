@@ -1,18 +1,15 @@
 package test
 
 import (
-	"database/sql"
 	"testing"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/Andhika-GIT/Go-REST-Event-Management/app"
+	"github.com/stretchr/testify/assert"
 )
 
+var db = app.NewDB()
+
 func TestConnection(t *testing.T) {
-	db, err := sql.Open("mysql", "root:root@/jura-event-management")
-	if err != nil {
-		panic(err)
-	}
 
-	defer db.Close()
-
+	assert.NotNil(t, db)
 }
