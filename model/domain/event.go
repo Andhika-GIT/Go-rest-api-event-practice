@@ -9,8 +9,8 @@ type Event struct {
 	Description string    `gorm:"column:description"`
 	Start_time  time.Time `gorm:"column:start_time"`
 	End_time    time.Time `gorm:"column:end_time"`
-	Created_at  time.Time `gorm:"column:created_at"`
-	Updated_at  time.Time `gorm:"column:updated_at"`
+	Created_at  time.Time `gorm:"column:created_at;autoCreateTime"`
+	Updated_at  time.Time `gorm:"column:updated_at;autoCreateTime;autoUpdateTime"`
 }
 
 func (e *Event) TableName() string {
