@@ -13,7 +13,7 @@ func NewUserRepository() UserRepository {
 	return &UserRepositoryImpl{}
 }
 
-func (repository *UserRepositoryImpl) Save(ctx context.Context, tx *gorm.DB, user domain.User) (domain.User, error) {
+func (repository *UserRepositoryImpl) Create(ctx context.Context, tx *gorm.DB, user domain.User) (domain.User, error) {
 	err := tx.Create(&user).Error
 
 	if err != nil {

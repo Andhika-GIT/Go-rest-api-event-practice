@@ -1,6 +1,6 @@
 package web
 
 type UserResponse struct {
-	Id   string `json:"id"`
+	Id   int32  `json:"id"`
 	Name string `json:"name"`
 }
