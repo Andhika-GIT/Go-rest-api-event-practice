@@ -15,7 +15,7 @@ import (
 )
 
 func InitializedServer(option ...validator.Option) *chi.Mux {
-	wire.Build(app.NewDB, app.NewRouter, validator.New, repository.NewUserRepository, service.NewUserService, controller.NewUserController)
+	wire.Build(app.NewDB, repository.NewUserRepository, controller.NewUserController, service.NewUserService, validator.New, app.NewRouter)
 
 	return nil
 }

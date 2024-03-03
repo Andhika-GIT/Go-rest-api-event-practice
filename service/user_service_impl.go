@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/Andhika-GIT/Go-REST-Event-Management/helper"
 	"github.com/Andhika-GIT/Go-REST-Event-Management/model/web"
 	"github.com/Andhika-GIT/Go-REST-Event-Management/repository"
+	"github.com/Andhika-GIT/Go-REST-Event-Management/transaction"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
@@ -33,7 +33,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, request web.UserCrea
 		return web.UserResponse{}, err
 	}
 
-	user, err := helper.DatabaseTransaction("create", ctx, service, 0)
+	user, err := transaction.UserDatabaseTransaction("create", ctx, service.DB, service.UserRepository, 0)
 
 	if err != nil {
 		return web.UserResponse{}, err
@@ -53,7 +53,7 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 		return web.UserResponse{}, err
 	}
 
-	user, err := helper.DatabaseTransaction("update", ctx, service, 0)
+	user, err := transaction.UserDatabaseTransaction("update", ctx, service.DB, service.UserRepository, 0)
 
 	if err != nil {
 		return web.UserResponse{}, err
@@ -66,7 +66,7 @@ func (service *UserServiceImpl) Update(ctx context.Context, request web.UserUpda
 }
 
 func (service *UserServiceImpl) Delete(ctx context.Context, userId int32) error {
-	_, err := helper.DatabaseTransaction("delete", ctx, service, 0)
+	_, err := transaction.UserDatabaseTransaction("delete", ctx, service.DB, service.UserRepository, 0)
 
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func (service *UserServiceImpl) Delete(ctx context.Context, userId int32) error 
 }
 
 func (service *UserServiceImpl) FindById(ctx context.Context, userId int32) (web.UserResponse, error) {
-	user, err := helper.DatabaseTransaction("findById", ctx, service, userId)
+	user, err := transaction.UserDatabaseTransaction("findById", ctx, service.DB, service.UserRepository, userId)
 
 	if err != nil {
 		return web.UserResponse{}, nil

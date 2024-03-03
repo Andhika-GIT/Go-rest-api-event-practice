@@ -13,45 +13,63 @@ func NewUserRepository() UserRepository {
 	return &UserRepositoryImpl{}
 }
 
-func (repository *UserRepositoryImpl) Create(ctx context.Context, tx *gorm.DB, user domain.User) (domain.User, error) {
+func (repository *UserRepositoryImpl) Create(ctx context.Context, tx *gorm.DB, user domain.User) error {
+
 	err := tx.Create(&user).Error
 
 	if err != nil {
-		return user, err
+		return err
 	}
 
-	return user, nil
+	return nil
 }
 
-func (repository *UserRepositoryImpl) Update(ctx context.Context, tx *gorm.DB, user domain.User) (domain.User, error) {
+func (repository *UserRepositoryImpl) Update(ctx context.Context, tx *gorm.DB, user domain.User) error {
+
 	err := tx.Save(&user).Error
 
 	if err != nil {
-		return user, err
+		return err
 	}
 
-	return user, nil
+	return nil
 }
 
-func (repository *UserRepositoryImpl) Delete(ctx context.Context, tx *gorm.DB, user domain.User) (domain.User, error) {
+func (repository *UserRepositoryImpl) Delete(ctx context.Context, tx *gorm.DB, user domain.User) error {
+
 	err := tx.Where("id = ?", user.Id).Delete(&user).Error
 
 	if err != nil {
-		return user, err
+		return err
 	}
 
-	return user, nil
+	return nil
 }
 
-func (repository *UserRepositoryImpl) FindById(ctx context.Context, tx *gorm.DB, userId int32) (domain.User, error) {
+func (repository *UserRepositoryImpl) FindAll(ctx context.Context, tx *gorm.DB, user *domain.User) error {
 
-	user := domain.User{}
-	err := tx.First(&user, userId).Error
+	var users []domain.User
+
+	err := tx.Find(&users).Error
+
+	user = users
 
 	if err != nil {
-		return user, err
+		return err
 	}
 
-	return user, nil
+	return nil
+
+}
+
+func (repository *UserRepositoryImpl) FindById(ctx context.Context, tx *gorm.DB, user domain.User) error {
+
+	err := tx.First(&user, user.Id).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 
 }
