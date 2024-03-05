@@ -46,13 +46,9 @@ func (repository *UserRepositoryImpl) Delete(ctx context.Context, tx *gorm.DB, u
 	return nil
 }
 
-func (repository *UserRepositoryImpl) FindAll(ctx context.Context, tx *gorm.DB, user *domain.User) error {
-
-	var users []domain.User
+func (repository *UserRepositoryImpl) FindAll(ctx context.Context, tx *gorm.DB, users []domain.User) error {
 
 	err := tx.Find(&users).Error
-
-	user = users
 
 	if err != nil {
 		return err

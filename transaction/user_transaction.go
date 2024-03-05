@@ -21,8 +21,6 @@ func RunTransactionType(transactionType string, ctx context.Context, tx *gorm.DB
 		err = UserRepository.Update(ctx, tx, user)
 	case "delete":
 		err = UserRepository.Delete(ctx, tx, user)
-	case "findAll":
-		err = UserRepository.FindAll(ctx, tx, &user)
 	case "findById":
 		for _, id := range optional {
 			user.Id = id
@@ -34,7 +32,7 @@ func RunTransactionType(transactionType string, ctx context.Context, tx *gorm.DB
 
 }
 
-func UserDatabaseTransaction[T any](transactionType string, ctx context.Context, DB *gorm.DB, repository repository.UserRepository, optional ...int32) (T, error) {
+func UserDatabaseTransaction(transactionType string, ctx context.Context, DB *gorm.DB, repository repository.UserRepository, optional ...int32) (domain.User, error) {
 
 	var user domain.User
 

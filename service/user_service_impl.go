@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/Andhika-GIT/Go-REST-Event-Management/model/domain"
 	"github.com/Andhika-GIT/Go-REST-Event-Management/model/web"
 	"github.com/Andhika-GIT/Go-REST-Event-Management/repository"
 	"github.com/Andhika-GIT/Go-REST-Event-Management/transaction"
@@ -86,4 +87,36 @@ func (service *UserServiceImpl) FindById(ctx context.Context, userId int32) (web
 		Id:   user.Id,
 		Name: user.Name,
 	}, nil
+}
+
+func (service *UserServiceImpl) FindAll(ctx context.Context) ([]web.UserResponse, error) {
+	var users []domain.User
+
+	var usersResponse []web.UserResponse
+
+	err := service.DB.Transaction(func(tx *gorm.DB) error {
+		err := service.UserRepository.FindAll(ctx, tx, users)
+
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return usersResponse, nil
+	}
+
+	for _, value := range users {
+		user := web.UserResponse{
+			Id:   value.Id,
+			Name: value.Name,
+		}
+
+		usersResponse = append(usersResponse, user)
+	}
+
+	return usersResponse, nil
+
 }
